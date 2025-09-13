@@ -1,0 +1,35 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Our Organic Products</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="brand"><font size = 14><center>Mahalakshmi Sugandhalay • Organic Products</center></font size =14></div>
+  </header>
+  <h1>Our Products</h1>
+  <main class="container">
+    <div class="grid">
+      {% for p in products %}
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/' + p.image) }}" alt="{{ p.name }}">
+        <h3>{{ p.name }}</h3>
+        <p class="price">{{ p.price }}</p>
+        <p class="desc">{{ p.description }}</p>
+        <div class="actions">
+          <a class="btn" href="{{ url_for('product_page', product_id=p.id) }}">View</a>
+          <a class="btn-alt" href="https://wa.me/{{ whatsapp }}?text=Hi%20I%20want%20to%20order%20{{ p.name }}" target="_blank">WhatsApp</a>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <section class="pay">
+      <h4>Pay with BharatPay QR</h4>
+      <img class="qr" src="{{ url_for('static', filename='images/bharatpay_qr.jpeg') }}" alt="BharatPay QR">
+    </section>
+  </main>
+</body>
+</html>
