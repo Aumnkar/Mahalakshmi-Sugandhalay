@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>{{ product.name }}</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+  <main class="container">
+    <a href="/">← Back to products</a>
+    <div class="product-wrap">
+      <div class="left">
+        <img src="{{ url_for('static', filename='images/' + product.image) }}" alt="{{ product.name }}">
+      </div>
+      <div class="right">
+        <h2>{{ product.name }}</h2>
+        <p class="price">{{ product.price }}</p>
+        <p>{{ product.description }}</p>
+
+        <div class="order-actions">
+          <a class="btn" href="https://wa.me/{{ whatsapp }}?text=Hi%20I%20want%20to%20order%20{{ product.name }}" target="_blank">Order via WhatsApp</a>
+        </div>
+
+        <hr>
+        <h4>Interested? Leave your contact</h4>
+        <form id="leadForm">
+          <input name="name" placeholder="Your name" required><br>
+          <input name="phone" placeholder="Phone / WhatsApp" required><br>
+          <textarea name="message" placeholder="Message / delivery area"></textarea><br>
+          <button type="submit" class="btn">Send</button>
+          <span id="status" style="margin-left:10px;display:none;color:green">Sent — we will contact you.</span>
+        </form>
+      </div>
+    </div>
+  </main>
+
+<script>
+document.getElementById('leadForm').addEventListener('submit', async function(e){
+  e.preventDefault();
+  const data = {
+    name: e.target.name.value,
+    phone: e.target.phone.value,
+    message: e.target.message.value
+  };
+  const res = await fetch('/lead', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  const j = await res.json();
+  if(j.status === 'ok'){ document.getElementById('status').style.display='inline'; e.target.reset(); }
+});
+</script>
+</body>
+</html>
